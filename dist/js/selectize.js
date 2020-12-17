@@ -2036,7 +2036,7 @@
 					if (!self.isPending) {
 						$option = self.getOption(value);
 						value_next = self.getAdjacentOption($option, 1).attr('data-value');
-						self.refreshOptions(self.isFocused && inputMode !== 'single');
+					        self.refreshOptions(false);
 						if (value_next) {
 							self.setActiveOption(self.getOption(value_next));
 						}
