@@ -912,6 +912,7 @@
 		 * input / select element.
 		 */
 		onChange: function() {
+			this.$input.trigger('input');
 			this.$input.trigger('change');
 		},
 	
@@ -1037,7 +1038,7 @@
 							e.preventDefault();
 						}
 					}
-					if (self.settings.create && self.createItem()) {
+					if (self.settings.create && self.createItem(null, false)) {
 						e.preventDefault();
 					}
 					return;
@@ -1304,8 +1305,8 @@
 	
 		/**
 		 * Resets the number of max items to the given value
-		 * 
-		 * @param {number} value 
+		 *
+		 * @param {number} value
 		 */
 		setMaxItems: function(value){
 			if(value === 0) value = null; //reset to unlimited items.
@@ -1690,6 +1691,10 @@
 							$active = $dropdown_content.find('[data-selectable]:first');
 						}
 					}
+				        // the addPrecedence option doesn't seem to work as is, added this to force it after the above logic
+	                                if (self.settings.addPrecedence) {
+	                                        $active = $dropdown_content.find('[data-selectable]:first');
+	                                }
 				} else {
 					$active = $create;
 				}
@@ -1883,7 +1888,7 @@
 	
 		/**
 		 * Clears all options.
-		 * 
+		 *
 		 * @param {boolean} silent
 		 */
 		clearOptions: function(silent) {
@@ -3064,6 +3069,29 @@
 		})();
 	
 	});
+	
+	Selectize.define('enter_key_submit', function (options) {
+	    var self = this;
+	
+	    this.onKeyDown = (function (e) {
+	      var original = self.onKeyDown;
+	
+	      return function (e) {
+	        // this.items.length MIGHT change after event propagation.
+	        // We need the initial value as well. See next comment.
+	        var initialSelection = this.items.length;
+	        original.apply(this, arguments);
+	
+	        if (e.keyCode === 13
+	            // Necessary because we don't want this to be triggered when an option is selected with Enter after pressing DOWN key to trigger the dropdown options
+	            && initialSelection && initialSelection === this.items.length
+	            && this.$control_input.val() === '') {
+	          self.trigger('submit');
+	        }
+	      };
+	    })();
+	});
+	
 	
 	Selectize.define('optgroup_columns', function(options) {
 		var self = this;

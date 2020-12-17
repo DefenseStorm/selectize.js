@@ -540,7 +540,7 @@ $.extend(Selectize.prototype, {
 						e.preventDefault();
 					}
 				}
-				if (self.settings.create && self.createItem()) {
+				if (self.settings.create && self.createItem(null, false)) {
 					e.preventDefault();
 				}
 				return;
@@ -1193,6 +1193,10 @@ $.extend(Selectize.prototype, {
 						$active = $dropdown_content.find('[data-selectable]:first');
 					}
 				}
+			        // the addPrecedence option doesn't seem to work as is, added this to force it after the above logic
+                                if (self.settings.addPrecedence) {
+                                        $active = $dropdown_content.find('[data-selectable]:first');
+                                }
 			} else {
 				$active = $create;
 			}
