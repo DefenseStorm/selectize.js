@@ -1,3 +1,11 @@
+# DefenseStorm
+
+This library was cloned from `selectize/selectize.js` as we needed to make a few custom changes to it. In order to get those changes reflected in console, perform the following steps:
+```
+grunt --plugins=*
+cp dist/js/standalone/selectize.js /path/to/console/src/third-party/selectize.standalone.js
+```
+
 # selectize.js
 → Selectize is looking for [new members on the maintenance team](https://github.com/selectize/selectize.js/issues/752)!
 
